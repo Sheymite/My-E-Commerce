@@ -25,26 +25,26 @@
 name: Deploy HTML/CSS to EC2
 
 on:
- push:
-  branches:
-   - master # Change this to your master branch name if different
+  push:
+    branches:
+    - master # Change this to your master branch name if different
 
-   jobs:
-    deploy:
-      runs-on: self-hosted # Using a self-hosted runner
+jobs:
+  deploy:
+    runs-on: self-hosted # Using a self-hosted runner
 
-      steps:
-      -name: Checkout code
-      uses: actions/checkout@v3
+    steps:
+    -name: Checkout code
+    uses: actions/checkout@v3
 
-      -name: Deploy to /var/www/html
-      run: |
-        # Remove old files 
-        sudo rm -rf /var/ww/html/*
+    -name: Deploy to /var/www/html
+    run: |
+      # Remove old files 
+      sudo rm -rf /var/ww/html/*
 
-        # Copy new files
-        sudo cp -r ./* /var/www/html/
+      # Copy new files
+      sudo cp -r ./* /var/www/html/
 
-        # Set proper permissions
-        sudo chown -R www.-data:www-data /var/www/html
-        sudo chmod -R 755 /var/www/html
+      # Set proper permissions
+      sudo chown -R www.-data:www-data /var/www/html
+      sudo chmod -R 755 /var/www/html
