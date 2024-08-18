@@ -1,23 +1,50 @@
-name: Deploy Static Files to S3
+# name: Deploy Static Files to S3
+
+# on:
+#  push:
+#   branches:
+#    - master
+
+# jobs:
+#  deploy:
+#   runs-on: ubuntu-latest
+
+#   steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
+
+#     - name: Deploy to S3
+#       uses: jakejarvis/s3-sync-action@v0.5.1
+
+#       env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_REGION: ${{ secrets.AWS_REGION }}
+#           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+
+name: Deploy HTML/CSS to EC2
 
 on:
  push:
   branches:
-   - master
+   - master # Change this to your master branch name if different
 
-jobs:
- deploy:
-  runs-on: ubuntu-latest
+   jobs:
+    deploy:
+      runs-on: self-hosted # Using a self-hosted runner
 
-  steps:
-    - name: Checkout code
+      steps:
+      -name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Deploy to S3
-      uses: jakejarvis/s3-sync-action@v0.5.1
+      -name: Deploy to /var/www/html
+      run: |
+        # Remove old files 
+        sudo rm -rf /var/ww/html/*
 
-      env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        # Copy new files
+        sudo cp -r ./* /var/www/html/
+
+        # Set proper permissions
+        sudo chown -R www.-data:www-data /var/www/html
+        sudo chmod -R 755 /var/www/html
