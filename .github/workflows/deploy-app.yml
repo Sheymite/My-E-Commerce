@@ -34,17 +34,17 @@ jobs:
     runs-on: self-hosted # Using a self-hosted runner
 
     steps:
-    -name: Checkout code
-    uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-    -name: Deploy to /var/www/html
-    run: |
-      # Remove old files 
-      sudo rm -rf /var/ww/html/*
+    - name: Deploy to /var/www/html
+      run: |
+        # Remove old files 
+        sudo rm -rf /var/ww/html/*
 
-      # Copy new files
-      sudo cp -r ./* /var/www/html/
+        # Copy new files
+        sudo cp -r ./* /var/www/html/
 
-      # Set proper permissions
-      sudo chown -R www.-data:www-data /var/www/html
-      sudo chmod -R 755 /var/www/html
+        # Set proper permissions
+        sudo chown -R www.-data:www-data /var/www/html
+        sudo chmod -R 755 /var/www/html
